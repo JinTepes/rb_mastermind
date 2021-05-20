@@ -20,7 +20,6 @@ def showColors
     #puts "for testing, secret code is: #{$secretCode}"
     puts "COLORS"
     puts "(1) Red | (2) Orange | (3) Green | (4) Blue | (5): Yellow | (6) Violet\n\n"
-    
 end
 
 def checkWin(guessed, seccode)
@@ -53,7 +52,7 @@ def codeBreakerGame
         loop = true
         while loop == true
             puts "Previous Guess: #{$daPlayer.guessCode}"
-            print "Code: "
+            print "\nCode: "
             guess=gets.chomp
             if guess.length == 4 and guess.to_i.is_a?(Numeric) == true
                 loop = false
@@ -84,5 +83,53 @@ def codeBreakerGame
 end
 
 def codeMakerGame
+    showColors
+    #looping secret code input
+    loop = true
+    while loop == true
+        print("\n\nEnter Secret Code: ")
+        tsecode = gets.chomp
+        if tsecode.length == 4 and tsecode.to_i.is_a?(Numeric) == true
+            tsecode = tsecode.split("") #i split ang code aron ma array para ma iterate nato
+            #gina append ang array sa secret code
+            for i in tsecode
+                $secretCode.append(i.to_s)
+            end
+            system "clear" #clearing screen
+            loop = false
+        else
+            puts "Invalid Secret Code!"
+        end
+    end
+    #secret code established. time  for the AI to guess IT
+    aiPlay
+end
 
+def aiPlay
+    ingame = true
+    while ingame == true
+        showColors
+        puts "Turns Left: #{$daAI.turns.to_s}"
+        puts "Previous Guess: #{$daAI.guessCode}"
+        #generate guess code and delete prev guessed code
+        $daAI.guessCode.clear
+        for i in 1..4
+            $daAI.guessCode.append(rand(1..6).to_s)
+        end
+        puts "AI's Current Guess Code: #{$daAI.guessCode}"
+        puts "\nEvaluating....."
+        sleep 4 #pausing for 4 sec
+        $daAI.turns -= 1
+        checkWin($daAI.guessCode, $secretCode) #checking to see if win. also give hints
+        if $score == 4 and $daAI.turns>0
+            ingame = false #stops game
+            system "clear"
+            puts "AI WINS!!\n\n"
+        elsif $daAI.turns == 0
+            ingame = false #stops game
+            system "clear"
+            puts "AI LOST!!\n\n"
+        end
+
+    end
 end

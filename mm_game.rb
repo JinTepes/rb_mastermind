@@ -25,7 +25,9 @@ def gameStart
             codeBreakerGame #starting code breaker game mode 
             loop=false #stops the loop
         when '2'
-            #
+            system "clear"
+            $daAI = Player.new #new ai player
+            codeMakerGame #starting code maker game
             loop=false #stops the loop
         when '3'
             #just ending loop
@@ -45,7 +47,7 @@ def gameEnd
     #looping input
     loop=true
     while loop == true
-        print "Choice: "
+        print "\nChoice: "
         choice = gets.chomp
         #cases
         case choice.to_s
